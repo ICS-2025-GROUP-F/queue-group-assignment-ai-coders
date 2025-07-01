@@ -1,3 +1,19 @@
+def show_status(self):
+    with self.lock:
+        if self.size == 0:
+            print("Queue is empty.")
+            return
+
+        print(f"\n[STATUS] Snapshot at Tick {self.time}:")
+        index = self.front
+        count = 0
+        while count < self.size:
+            job = self.queue[index]
+            print(f"{job['job_id']} - {job['user_id']} - P:{job['priority']} - WT:{job['waiting_time']} - ST:{job['submitted_time']}")
+            index = (index + 1) % self.capacity
+            count += 1
+        print("-" * 30)
+
 def save_snapshot(self):
     with self.lock:
         with open("queue_snapshot.txt", "w") as f:
@@ -10,3 +26,4 @@ def save_snapshot(self):
                 index = (index + 1) % self.capacity
                 count += 1
             f.write("-" * 30 + "\n")
+
